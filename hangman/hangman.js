@@ -1,47 +1,65 @@
-const Hangman = function (inputWord, guessRemaining) {
-  this.word = inputWord.toLowerCase().split('') //return string
-  this.guessRemaining = guessRemaining
-  this.guessedLetter = []
-}
-
-Hangman.prototype.getPuzzle = function () 
-{
-  //stored guessed letters
-  let puzzle = ''
+class Hangman {
+  constructor(word, guessRemaining) {
+    this.word = word.toLowerCase().split('') //return string
+    this.guessRemaining = guessRemaining
+    this.guessedLetter = []
+    this.status = 'playing'
+  }
+  
+  get puzzle() {
+    //stored guessed letters
+    let puzzle = ''
 
   //loop through the hangman word
-  this.word.forEach((letter) => {
-    if(this.guessedLetter.includes(letter) || letter === ' ') {
-      puzzle += letter
+    this.word.forEach((letter) => {
+      if(this.guessedLetter.includes(letter) || letter === ' ') {
+        puzzle += letter
+      } else {
+        puzzle += '*'
+      }
+    })
+
+    return puzzle
+  }
+
+  calculateStatus() {
+    const finished = this.word.every((letter) => this.guessedLetter.includes(letter) || letter === ' ')
+
+    if(finished) {
+      this.status = 'finished!'
+    } else if (this.guessRemaining === 0 || this.guessRemaining < 0) {
+      this.status = 'failed'
     } else {
-      puzzle += '*'
+      this.status = 'playing'
     }
-  })
+  }
 
-  return puzzle
-}
+  get statusMessage() {
+    if(this.status === 'playing') {
+      return `Guesses left: ${this.guessRemaining} `
+    } else if(this.status === 'failed') {
+      return `Nice try! The word was "${this.word.join('')}"`
+    } else {
+      return 'Great work! You guessed the word.'
+    }
+  }
 
-Hangman.prototype.makeGuess = function (guess) {
-  guess = guess.toLowerCase()
-  const unique = !this.guessedLetter.includes(guess)
-  const badGuess = !this.word.includes(guess)
+  makeGuess(guess) {
+    guess = guess.toLowerCase()
+    const unique = !this.guessedLetter.includes(guess)
+    const badGuess = !this.puzzle.includes(guess)
 
-  if(unique) {
-    this.guessedLetter.push(guess)
-  } else if (unique && badGuess) {
-    this.guessRemaining-- 
+    if(unique) {
+      this.guessedLetter.push(guess)
+    } else if (unique && badGuess) {
+      this.guessRemaining-- 
+    } else if (!badGuess) {
+      this.guessRemaining-- 
+    } else {
+      this.guessRemaining-- 
+    }
+
+    this.calculateStatus()
   }
 }
 
-const game1 = new Hangman('Cat', 2)
-
-// Add click event
-window.addEventListener('keypress', function (e) {
-  // console.log(e)
-  // convert charcode to string
-  const guess = String.fromCharCode(e.charCode)
-  // console.log(guess) // printing the letter
-  game1.makeGuess(guess)
-  console.log(game1.getPuzzle())
-  console.log(game1.guessRemaining) // c*t
-})
