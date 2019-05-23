@@ -2,19 +2,24 @@
 
 <html>
   <head>
+    <link rel="stylesheet" href="./styles/style.css">
+    <link rel="icon" href="./images/favicon.png">
     <title>Hangman!</title>
   </head>
   <body>
-    <h2>Welcome to Hangman game! Please press a key on your keyboard</h2>
-    <div id="displayPuzzle"></div>
-    <div id="displayGuessRemain"></div>
-    <br>
-    <div id="gameStatus"></div>
+    
 
-    <button id="reset">Reset</button>
-    <script src="requests.js"></script>
-    <script src="./hangman.js"></script>
-    <script src="./app.js"></script>
+    <div>
+        <div id="displayPuzzle" class="puzzle"></div>
+        <p id="displayGuessRemain" ></p>
+        <button id="reset" class="button">Reset</button>
+    </div>
+    <script src="./scripts/requests.js"></script>
+    <script src="./scripts/hangman.js"></script>
+    <script src="./scripts/app.js"></script>
   </body>
 
 </html>
+
+<!-- <div id="gameStatus"></div> -->
+<!-- <h2>Welcome to Hangman game! Please press a key on your keyboard</h2> -->

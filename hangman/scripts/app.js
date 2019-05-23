@@ -14,8 +14,25 @@ window.addEventListener('keypress', (e) => {
 })
 
 const render = () => {
-  puzzleEl.textContent = game1.puzzle
+  puzzleEl.innerHTML = ''
   guessesEl.textContent = game1.statusMessage
+
+//WAYS TO RENDER THE PUZZLE TO THE SCREEN
+
+  for(i = 0; i < game1.puzzle.length; i++) {
+    puzzleEl.innerHTML += `<span>${game1.puzzle[i]}</span>`
+  }
+
+  // game1.puzzle.split('').forEach((letter) => {
+  //   const letterEl = document.createElement('span')
+  //   letterEl.textContent = letter
+  //   puzzleEl.appendChild(letterEl)
+  // })
+
+  // let arrayOfWords = game1.puzzle.split('')
+  // arrayOfWords.forEach((letter) => {
+  //   puzzleEl.innerHTML += `<span>${letter}</span>`
+  // })
 }
 
 const startGame = async () => {
