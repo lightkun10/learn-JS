@@ -1,15 +1,6 @@
-// HTTP (Hypertext Transfer Protocol)
-  // Request - What do we want to do
-  // Response - What was actually done
-
 const puzzleEl = document.querySelector('#displayPuzzle')
 const guessesEl = document.querySelector('#displayGuessRemain')
-const game1 = new Hangman('Cat Food', 4)
-
-puzzleEl.textContent = game1.puzzle
-guessesEl.textContent = game1.statusMessage
-console.log(game1.status)
-
+let game1
 
 // Add click event
 window.addEventListener('keypress', (e) => {
@@ -18,32 +9,44 @@ window.addEventListener('keypress', (e) => {
   const guess = String.fromCharCode(e.charCode)
   // console.log(guess) // printing the letter
   game1.makeGuess(guess)
-  puzzleEl.textContent = game1.puzzle
-  guessesEl.textContent = game1.statusMessage // c*t
+  render()
   console.log(game1.status)
 })
 
-getPuzzle('2').then((puzzle) => {
-  console.log(puzzle)
-}).catch((err) => {
-  console.log(`Error: ${err}`)
-})
+const render = () => {
+  puzzleEl.textContent = game1.puzzle
+  guessesEl.textContent = game1.statusMessage
+}
 
-getCountry('ID').then((country) => {
-  console.log(`My country name: ${country.name}`)
-}).catch((err) => {
-  console.log(`Error: ${err}`)
-})
+const startGame = async () => {
+  const puzzle = await getPuzzle('2')
+  game1 = new Hangman(puzzle, 5)
+  render()
+}
 
-getLocation().then((location) => {
-  console.log(location)
-  return getCountry(location.country)
-}).then((country) => {
-  console.log(country.name)
-}).catch((err) => {
-  console.log(`Error: ${err}`)
-})
+document.querySelector('#reset').addEventListener('click', startGame)
 
-// https://ipinfo.io/json?token=004b9406858808
+startGame()
 
-//city, region, country
+// getPuzzle('2').then((puzzle) => {
+//   console.log(puzzle)
+// }).catch((err) => {
+//   console.log(`Error: ${err}`)
+// })
+
+
+// getCurrentCountry().then((country) => {
+//   console.log(country.name)
+// }).catch((error) => {
+//   console.log(error)
+// })
+
+// getLocation().then((location) => {
+//   console.log(location)
+//   console.log(`I currently live in ${location.city} city, ${location.region} region ${location.country}`)
+//   return getCountry(location.country) // promise chaining
+// }).then((country) => { // passed from requests.js
+//   console.log(country.name)
+// }).catch((err) => {
+//   console.log(`Error: ${err}`)
+// })
