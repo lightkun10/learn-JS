@@ -39,6 +39,7 @@ const toggleTodo = (id) => {
 
 // Render application todos based on filters
 const renderTodos = (todos, filters) => {
+  const todoEl = document.querySelector('#todos')
         // the function gets called with individual items
   const filteredTodo = todos.filter((todo) => {
     const searchTextMatch = todo.text.toLowerCase().includes(filters.searchText.toLowerCase())
@@ -50,13 +51,20 @@ const renderTodos = (todos, filters) => {
 
   const todoLeft = filteredTodo.filter((todos) => !todos.completed)
 
-  document.querySelector('#todos').innerHTML = ''
+  todoEl.innerHTML = ''
 
-  document.querySelector('#todos').appendChild(generateSummaryDom(todoLeft))
+  todoEl.appendChild(generateSummaryDom(todoLeft))
 
-  filteredTodo.forEach((todos) => {
-    document.querySelector('#todos').appendChild(generateTodoDOM(todos))
-  })
+  if(filteredTodo.length > 0) {
+    filteredTodo.forEach((todos) => {
+      todoEl.appendChild(generateTodoDOM(todos))
+    })
+  } else {
+    const messageEl = document.createElement('p')
+    messageEl.textContent = 'No to-dos to show'
+    messageEl.classList.add('empty-message')
+    todoEl.appendChild(messageEl)
+  }
 }
 
 // Get the DOM elements for an individual note
